@@ -5,6 +5,7 @@ include 'templates/header.php' ?>
         <div class="col-12 col-md-4 mb-3">
             <div class="card bg-primary shadow">
                 <div class="card-body">
+
                     <h1 class="text-white">Invita <br> A Tus Amigos 🔥</h1>
                     <p class="card-text text-white">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Corporis
                         provident
