@@ -60,3 +60,11 @@
   background-repeat: no-repeat;
   background-size: contain;
 }
+
+.bg-fondo {
+  height: auto;
+  background-image: url("../img_fondo/bg.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}

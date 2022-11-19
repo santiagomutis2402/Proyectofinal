@@ -33,10 +33,10 @@ class pelicula extends modeloCredencialesBD
     }
 
 
-    public function crearcarpeta()
+    public function crearcarpeta($titulo)
     {
-        $carpetaImagenes = "../img/peliculas/";
-        if (!is_dir($carpetaImagenes)) {
+        $carpetaImagenes = "../img/peliculas/" . $titulo . "/";
+        if (!is_dir(dirname($carpetaImagenes))) {
             mkdir($carpetaImagenes);
         }
         return $carpetaImagenes;
@@ -45,9 +45,11 @@ class pelicula extends modeloCredencialesBD
     public function moverarchivo($imagen, $carpetaImagenes)
     {
 
-        $imagePath = $carpetaImagenes . md5(uniqid(rand(), true)) . '/' . $imagen['name'];
-        mkdir(dirname($imagePath));
-
+        $imagePath = $carpetaImagenes  . $imagen['name'];
+        if (!is_dir(dirname($imagePath))) {
+            mkdir(dirname($imagePath));
+        }
+        // mkdir(dirname($imagePath));
         // var_dump($imagen);
 
         move_uploaded_file($imagen['tmp_name'], $imagePath);
@@ -57,11 +59,18 @@ class pelicula extends modeloCredencialesBD
         return $rutaImagen;
     }
 
+    public function eliminar($carpetaImagenes, $titulo)
+    {
+        $carpetaEliminar = explode('/',  $carpetaImagenes . $titulo);
+    }
+
     public function InsertarPelicula($titulo, $descripcion, $portada, $video, $id_genero)
     {
 
         $instruccion = "call insertar_peli('" . $titulo . "','" . $descripcion .
-            "','" . $portada . "','" . $video . "',  $id_genero )";
+            "','" . $portada . "','" . $video . "',  $id_genero)";
+
+        var_dump($instruccion);
         $consulta = $this->_db->query($instruccion);
 
         if (!$consulta) {
@@ -105,13 +114,65 @@ class pelicula extends modeloCredencialesBD
         $instruccion = "CALL streamweb.listar_pelicula_id($ID)";
         $consulta = $this->_db->query($instruccion);
         $resultado = $consulta->fetch_assoc();
-
         if (!$resultado) {
             echo "Fallo al consultar las actividades";
         } else {
             return $resultado;
-
             $this->_db->close();
         }
+    }
+
+    public function formatear($dumo)
+    {
+        echo "<pre>";
+        var_dump($dumo);
+        echo "</pre>";
+        exit;
+    }
+
+    /////////////login
+
+    public function login($username, $password)
+    {
+        $instruccion = "call streamweb.login('${username}')";
+        $consulta = $this->_db->query($instruccion);
+
+        if ($consulta->num_rows) {
+            $usuario = mysqli_fetch_assoc($consulta);
+
+            // Password a revisar y el de la BD.
+            $auth = password_verify($password, $usuario['password']);
+            if ($auth) {
+                // Autenticado.
+                session_start();
+                $_SESSION['usuario'] = $usuario['username'];
+                $_SESSION['name'] = $usuario['name'];
+                $_SESSION['picture'] = $usuario['picture'];
+                $_SESSION['id'] = $usuario['id'];
+                $_SESSION['login'] = true;
+                return true;
+            } else {
+                // No autenticado
+                $errores[] = 'El Password es incorrecto';
+                return false;
+            }
+        }
+    }
+
+
+    public function val_password($pasword)
+    {
+        $pasword = mysqli_real_escape_string($this->_db,  $pasword);
+        return $pasword;
+    }
+
+    public function registro($name, $username, $password, $rol)
+    {
+        ////validar insert
+        $passwordHash = password_hash($password, PASSWORD_BCRYPT);
+        $instruccion = "call streamweb.insertar_usuario('${name}','${username}','${passwordHash}',${rol})";
+        $consulta = $this->_db->query($instruccion);
+
+        return $instruccion;
     }
 }

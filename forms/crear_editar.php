@@ -5,7 +5,7 @@ require_once("../class/pelicula.php");
 $obj_actividad = new pelicula();
 $obj_pelicula = new pelicula();
 $generos = $obj_actividad->ListarGeneros();
-// $peliculas = $obj_pelicula->listar_peliculas_ID(2);
+$peliculas = $obj_pelicula->listar_peliculas_ID(1);
 
 $titulo = $peliculas['titulo'] ?? null;
 $descripcion = $peliculas['descripcion'] ?? null;
@@ -18,12 +18,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $genero = $_POST['genero'];
     $descripcion = $_POST['descripcion'];
     $portada = $_FILES['imagen'];
-    $video = $_POST['video'] ?? "hola de mar";
+    $video = $_FILES['video'];
 
     if ($id == null) {
-        $carpetaimagenes = $obj_pelicula->crearcarpeta();
+        $carpetaimagenes = $obj_pelicula->crearcarpeta($titulo);
         $rutaImagen = $obj_pelicula->moverarchivo($portada, $carpetaimagenes);
-        $response =  $obj_pelicula->InsertarPelicula($titulo, $descripcion, $rutaImagen, $video, $genero);
+        $rutaPortada = $obj_pelicula->moverarchivo($video, $carpetaimagenes);
+        $response =  $obj_pelicula->InsertarPelicula($titulo, $descripcion, $rutaImagen, $rutaPortada, $genero);
     } else {
     }
 }
@@ -60,11 +61,11 @@ $ngeneros = count($generos);
                     </div>
                     <div class="mb-3">
                         <label for="imagen" class="form-label">Portada</label>
-                        <input type="file" class="form-control" name="imagen" id="imagen" required>
+                        <input type="file" accept="img" class="form-control" name="imagen" id="imagen" required>
                     </div>
                     <div class="mb-3">
-                        <label for="" class="form-label">Video</label>
-                        <input type="file" class="form-control" placeholder="name@example.com">
+                        <label for="video" class="form-label">Video</label>
+                        <input type="file" class="form-control" name="video" id="video" placeholder="name@example.com">
                     </div>
 
                     <input type="submit" class="btn btn-primary" value="Subir">
