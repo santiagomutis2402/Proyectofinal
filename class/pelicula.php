@@ -42,35 +42,36 @@ class pelicula extends modeloCredencialesBD
         return $carpetaImagenes;
     }
 
-    public function moverarchivo($imagen, $carpetaImagenes)
+    public function moverarchivo($imagen, $carpetaImagenes, $titulo)
     {
 
         $imagePath = $carpetaImagenes  . $imagen['name'];
+
         if (!is_dir(dirname($imagePath))) {
             mkdir(dirname($imagePath));
         }
-        // mkdir(dirname($imagePath));
-        // var_dump($imagen);
 
         move_uploaded_file($imagen['tmp_name'], $imagePath);
-
         $rutaImagen = str_replace($carpetaImagenes, '', $imagePath);
-
+        $rutaImagen = "img/peliculas/${titulo}/"  . $imagen['name'];
         return $rutaImagen;
     }
 
     public function eliminar($carpetaImagenes, $titulo)
     {
-        $carpetaEliminar = explode('/',  $carpetaImagenes . $titulo);
+        // $carpetaEliminar = explode('/',  $propiedad['imagen']);
+
+        // // Borrar la imagen anterior...
+        // unlink($carpetaImagenes . $propiedad['imagen']);
+
+        // // Borra la carpeta
+        // rmdir($carpetaImagenes . $carpetaEliminar[0]);
     }
 
     public function InsertarPelicula($titulo, $descripcion, $portada, $video, $id_genero)
     {
 
-        $instruccion = "call insertar_peli('" . $titulo . "','" . $descripcion .
-            "','" . $portada . "','" . $video . "',  $id_genero)";
-
-        var_dump($instruccion);
+        $instruccion = "call streamweb.insertar_peli('${titulo}','${descripcion}','${portada}','${video}',$id_genero)";
         $consulta = $this->_db->query($instruccion);
 
         if (!$consulta) {
@@ -80,8 +81,6 @@ class pelicula extends modeloCredencialesBD
             $consulta->close();
             $this->_db->close();
         }
-
-        // header('location: ../index.php');
     }
 
     public function actualizarPelicula($id, $titulo, $descripcion, $portada, $video, $id_genero)
@@ -109,13 +108,30 @@ class pelicula extends modeloCredencialesBD
     }
 
 
+    public function listar_peliculas_principal()
+    {
+
+        $instruccion = "call streamweb.listar_principal()";
+        $consulta = $this->_db->query($instruccion);
+        $resultado = $consulta->fetch_all(MYSQLI_ASSOC);
+
+        if (!$resultado) {
+            echo "Fallo al consultar las peliculas";
+        } else {
+            return $resultado;
+            $resultado->close();
+            $this->_db->close();
+        }
+    }
+
+
     public function listar_peliculas_ID($ID)
     {
         $instruccion = "CALL streamweb.listar_pelicula_id($ID)";
         $consulta = $this->_db->query($instruccion);
         $resultado = $consulta->fetch_assoc();
         if (!$resultado) {
-            echo "Fallo al consultar las actividades";
+            // echo "Fallo al consultar las actividades";
         } else {
             return $resultado;
             $this->_db->close();
@@ -146,7 +162,7 @@ class pelicula extends modeloCredencialesBD
                 // Autenticado.
                 session_start();
                 $_SESSION['usuario'] = $usuario['username'];
-                $_SESSION['name'] = $usuario['name'];
+                $_SESSION['correo'] = $usuario['correo'];
                 $_SESSION['picture'] = $usuario['picture'];
                 $_SESSION['id'] = $usuario['id'];
                 $_SESSION['login'] = true;
@@ -173,6 +189,8 @@ class pelicula extends modeloCredencialesBD
         $instruccion = "call streamweb.insertar_usuario('${name}','${username}','${passwordHash}',${rol})";
         $consulta = $this->_db->query($instruccion);
 
-        return $instruccion;
+        if ($consulta == true) {
+            header('Location: /index.php');
+        }
     }
 }

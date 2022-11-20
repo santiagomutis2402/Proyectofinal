@@ -1,5 +1,16 @@
 <?php
-include 'templates/header.php' ?>
+include 'templates/header.php';
+require_once("class/pelicula.php");
+$obj_actividad = new pelicula();
+$peliculas = $obj_actividad->listar_peliculas_principal();
+
+$obj_pelicula2 = new pelicula();
+$peliculas2 = $obj_pelicula2->listar_peliculas();
+
+$npeliculas = count($peliculas);
+$npeliculas2 = count($peliculas2);
+
+?>
 <div class="container">
     <div class="row">
         <div class="col-12 col-md-4 mb-3">
@@ -31,33 +42,19 @@ include 'templates/header.php' ?>
                         aria-label="Slide 3"></button>
                 </div>
                 <div class="carousel-inner ">
+                    <?php if ($npeliculas > 0) : ?>
+                    <?php foreach ($peliculas as $resultado) : ?>
                     <div class="carousel-item active">
                         <div class="card tmc "
-                            style="background-image:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/avengers.jpg') ;">
+                            style="background-image:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('<?php echo $resultado['portada'] ?>') ;">
                         </div>
                         <div class="carousel-caption d-none d-md-block">
-                            <h5>First slide label</h5>
-                            <p>Some representative placeholder content for the first slide.</p>
+                            <h5><?php echo $resultado['titulo'] ?></h5>
+                            <p><?php echo $resultado['descripcion'] ?></p>
                         </div>
                     </div>
-                    <div class="carousel-item">
-                        <div class="card tmc "
-                            style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url('img/descarga.jpg') ;">
-                        </div>
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>First slide label</h5>
-                            <p>Some representative placeholder content for the first slide.</p>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="card tmc "
-                            style="background-image:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/haykiu.jpg') ;">
-                        </div>
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>First slide label</h5>
-                            <p>Some representative placeholder content for the first slide.</p>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
                     data-bs-slide="prev">
@@ -78,48 +75,24 @@ include 'templates/header.php' ?>
             <div class="col-12 mb-3">
                 <h1>Peliculas 📽️</h1>
             </div>
+            <?php if ($npeliculas2 > 0) : ?>
+            <?php foreach ($peliculas2 as $resultado2) : ?>
             <div class="col-12 col-md-3 mb-3 ">
-                <a href="carrousel.html">
-                    <div class="card tm " style="background-image:url('img/1366_2000.jpg') ;">
-
+                <a href="forms/detalles.php?id=<?php echo $resultado2['id'] ?>">
+                    <div class="card tm " style="background-image:url('<?php echo $resultado2['portada']; ?>') ;">
                         <div class="overlay">
-                            <div class="text">Avengers End Game</div>
+                            <div class="text">
+                                <p><?php echo $resultado2['titulo']; ?></p>
+                            </div>
                         </div>
                     </div>
                 </a>
             </div>
-            <div class="col-12 col-md-3 mb-3 ">
-                <a href="carrousel.html">
-                    <div class="card tm " style="background-image:url('img/descarga.jpg') ;">
-
-                        <div class="overlay">
-                            <div class="text">Avengers End Game</div>
-                        </div>
-                    </div>
-                </a>
+            <?php endforeach; ?>
+            <?php endif; ?>
+            <div class="d-grid gap-2">
+                <a href="forms/crear_editar.php" class="btn btn-primary mb-3">Insertar Pelicula</a>
             </div>
-            <div class="col-12 col-md-3 mb-3 ">
-                <a href="carrousel.html">
-                    <div class="card tm " style="background-image:url('img/avengers.jpg') ;">
-
-                        <div class="overlay">
-                            <div class="text">Avengers End Game</div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-12 col-md-3 mb-3 ">
-                <a href="forms/crear_editar.php">
-                    <div class="card tm " style="background-image:url('img/haykiu.jpg') ;">
-                        <div class="overlay">
-                            <div class="text">Avengers End Game </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-
-
         </div>
     </div>
     <?php include 'templates/footer.php' ?>

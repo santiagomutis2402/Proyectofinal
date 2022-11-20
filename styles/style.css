@@ -25,6 +25,15 @@
   background-size: cover;
 }
 
+.tmc2 {
+  height: 100%;
+  width: auto;
+  cursor: pointer;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .tm:hover .overlay {
   opacity: 1;
 }
@@ -64,6 +73,13 @@
 .bg-fondo {
   height: auto;
   background-image: url("../img_fondo/bg.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.bg-oscurecer {
+  height: 100%;
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;

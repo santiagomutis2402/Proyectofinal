@@ -49,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body class="bg-fondo">
     <div class="m-0 vh-100 row justify-content-center align-items-center">
         <div class="col-auto bg-dark p-5 card shadow-lg p-3 mb-5 rounded w-25">
+
             <h1 class="text-center text-white ">Login</h1>
             <form method="post" class="">
                 <div class="mb-3">
@@ -63,11 +64,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         placeholder="*********" name="password">
                 </div>
 
-                <p class="text-white fw-light">No tienes cuenta! <a href="" class="text-warning">Registrate</a></p>
+                <p class="text-white fw-light">No tienes cuenta! <a href="registro.php"
+                        class="text-warning">Registrate</a></p>
 
 
                 <div class="d-grid gap-2 mb-3">
-                    <button class="btn btn-outline-primary mb-3" type="submit">Login</button>
+                    <button class="btn btn-outline-primary mb-3" type="submit">Logeate</button>
                     <button class="btn btn-outline-light" type="button">Google</button>
                 </div>
                 <a href="/index.php" class="text-white fw-lighter ">Volver</a>
@@ -75,6 +77,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 
-</body>
-<!-- Section: Design Block -->
-<?php include '../templates/footer.php' ?>
+    <!-- Section: Design Block -->
+    <?php include '../templates/footer.php' ?>

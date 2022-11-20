@@ -1,16 +1,18 @@
 <?php
 include '../templates/header.php';
 require_once("../class/pelicula.php");
-// $id = 2;
+$id = $_GET['id'] ?? 0;
 $obj_actividad = new pelicula();
 $obj_pelicula = new pelicula();
+$obj_insertar = new pelicula();
 $generos = $obj_actividad->ListarGeneros();
-$peliculas = $obj_pelicula->listar_peliculas_ID(1);
+$peliculas = $obj_pelicula->listar_peliculas_ID($id);
 
 $titulo = $peliculas['titulo'] ?? null;
 $descripcion = $peliculas['descripcion'] ?? null;
 $genero = $peliculas['generoid'] ?? null;
 $portada = $peliculas['portada'] ?? null;
+$video = $peliculas['video'] ?? null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_POST['id'] ?? null;
@@ -20,12 +22,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $portada = $_FILES['imagen'];
     $video = $_FILES['video'];
 
-    if ($id == null) {
+    if ($id == 0) {
         $carpetaimagenes = $obj_pelicula->crearcarpeta($titulo);
-        $rutaImagen = $obj_pelicula->moverarchivo($portada, $carpetaimagenes);
-        $rutaPortada = $obj_pelicula->moverarchivo($video, $carpetaimagenes);
-        $response =  $obj_pelicula->InsertarPelicula($titulo, $descripcion, $rutaImagen, $rutaPortada, $genero);
+        $rutaImagen = $obj_pelicula->moverarchivo($portada, $carpetaimagenes, $titulo);
+        $rutaPortada = $obj_pelicula->moverarchivo($video, $carpetaimagenes, $titulo);
+        $response =  $obj_insertar->InsertarPelicula($titulo, $descripcion, $rutaImagen, $rutaPortada, $genero);
+
+        if ($response) {
+            header('Location: /index.php');
+        }
     } else {
+        if (empty($portada)) {
+        }
     }
 }
 $ngeneros = count($generos);
@@ -34,7 +42,12 @@ $ngeneros = count($generos);
     <div class="row">
         <div class="col-12 col-md-6 d-flex align-items-center">
             <div class="cuerpo w-100 me-5 ms-5">
+                <?php if ($id > 0) : ?>
+                <h1>Editar</h1>
+                <?php else : ?>
                 <h1>Crear</h1>
+                <?php endif; ?>
+
                 <form class="needs-validation" method="POST" enctype="multipart/form-data">
                     <hr>
                     <div class="mb-3">
