@@ -83,6 +83,23 @@ class pelicula extends modeloCredencialesBD
         }
     }
 
+    public function EditarPelicula($titulo, $descripcion, $portada, $video, $id_genero, $id)
+    {
+
+        $instruccion = "call streamweb.update_pelicula('${titulo}','${descripcion}','${portada}','${video}',$id_genero,$id)";
+        $consulta = $this->_db->query($instruccion);
+
+        if (!$consulta) {
+            echo "Fallo al insertar la pelicula";
+        } else {
+            return $consulta;
+            // var_dump($instruccion);
+            $consulta->close();
+            $this->_db->close();
+        }
+    }
+
+
     public function actualizarPelicula($id, $titulo, $descripcion, $portada, $video, $id_genero)
     {
         $instruccion = " call streamweb.update_pelicula('" . $titulo . "','" . $descripcion .
@@ -99,7 +116,7 @@ class pelicula extends modeloCredencialesBD
         $resultado = $consulta->fetch_all(MYSQLI_ASSOC);
 
         if (!$resultado) {
-            echo "Fallo al consultar las peliculas";
+            echo " ";
         } else {
             return $resultado;
             $resultado->close();
@@ -137,6 +154,23 @@ class pelicula extends modeloCredencialesBD
             $this->_db->close();
         }
     }
+
+
+
+    public function Buscar_Peli($titulo)
+    {
+        $instruccion = "call streamweb.buscar_parecido('${titulo}');";
+        $consulta = $this->_db->query($instruccion);
+        $resultado = $consulta->fetch_all(MYSQLI_ASSOC);
+        if (!$resultado) {
+            return 0;
+        } else {
+            return $resultado;
+            $this->_db->close();
+            $this->_db->close();
+        }
+    }
+
 
     public function formatear($dumo)
     {
@@ -190,7 +224,18 @@ class pelicula extends modeloCredencialesBD
         $consulta = $this->_db->query($instruccion);
 
         if ($consulta == true) {
-            header('Location: /index.php');
+            header('Location: /listar.php');
         }
+    }
+
+    public function validar(): bool
+    {
+        session_start();
+
+        if ($_SESSION['login']) {
+            return true;
+        }
+
+        return false;
     }
 }

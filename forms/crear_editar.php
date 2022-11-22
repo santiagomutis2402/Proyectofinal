@@ -1,39 +1,73 @@
 <?php
 include '../templates/header.php';
 require_once("../class/pelicula.php");
+
 $id = $_GET['id'] ?? 0;
+
 $obj_actividad = new pelicula();
+
+$auth = $obj_actividad->validar();
+if (!$auth) {
+    header('Location: /');
+}
+
 $obj_pelicula = new pelicula();
 $obj_insertar = new pelicula();
 $generos = $obj_actividad->ListarGeneros();
 $peliculas = $obj_pelicula->listar_peliculas_ID($id);
 
 $titulo = $peliculas['titulo'] ?? null;
+$titulo2 = $titulo;
 $descripcion = $peliculas['descripcion'] ?? null;
 $genero = $peliculas['generoid'] ?? null;
-$portada = $peliculas['portada'] ?? null;
-$video = $peliculas['video'] ?? null;
+$portadadb = $peliculas['portada'] ?? null;
+$videodb = $peliculas['video'] ?? null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id = $_POST['id'] ?? null;
+    $id =  $_GET['id'] ?? 0;
     $titulo = $_POST['titulo'];
     $genero = $_POST['genero'];
     $descripcion = $_POST['descripcion'];
-    $portada = $_FILES['imagen'];
-    $video = $_FILES['video'];
+    $portada = $_FILES['imagen'] ?? null;
+    $video = $_FILES['video'] ?? null;
+
+
 
     if ($id == 0) {
         $carpetaimagenes = $obj_pelicula->crearcarpeta($titulo);
         $rutaImagen = $obj_pelicula->moverarchivo($portada, $carpetaimagenes, $titulo);
-        $rutaPortada = $obj_pelicula->moverarchivo($video, $carpetaimagenes, $titulo);
-        $response =  $obj_insertar->InsertarPelicula($titulo, $descripcion, $rutaImagen, $rutaPortada, $genero);
-
-        if ($response) {
-            header('Location: /index.php');
-        }
+        $rutaVideo = $obj_pelicula->moverarchivo($video, $carpetaimagenes, $titulo);
+        $response =  $obj_insertar->InsertarPelicula($titulo, $descripcion, $rutaImagen, $rutaVideo, $genero);
     } else {
-        if (empty($portada)) {
+
+        if ($portada['name'] != "") {
+            $rutaImagen = "../" . $portadadb;
+            unlink($rutaImagen);
         }
+
+        if ($video['name'] != "") {
+            $rutaVideo = "../" . $videodb;
+            unlink($rutaVideo);
+        }
+
+
+        $carpetaimagenes = $obj_pelicula->crearcarpeta($titulo);
+        $rutaImagen = $obj_pelicula->moverarchivo($portada, $carpetaimagenes, $titulo);
+        $rutaVideo = $obj_pelicula->moverarchivo($video, $carpetaimagenes, $titulo);
+
+        var_dump($rutaImagen);
+        echo "<br>";
+        var_dump($rutaVideo);
+        echo "<br>";
+
+        if ($rutaImagen == "img/peliculas/haykiu/") {
+        }
+        exit;
+        $response = $obj_insertar->EditarPelicula($titulo, $descripcion, $rutaImagen, $rutaVideo, $genero, $id);
+    }
+
+    if ($response) {
+        header('Location: /listar.php');
     }
 }
 $ngeneros = count($generos);
@@ -48,7 +82,8 @@ $ngeneros = count($generos);
                 <h1>Crear</h1>
                 <?php endif; ?>
 
-                <form class="needs-validation" method="POST" enctype="multipart/form-data">
+                <form class="needs-validation" action="crear_editar.php?id=<?php echo $id; ?>" method="POST"
+                    enctype="multipart/form-data">
                     <hr>
                     <div class="mb-3">
                         <label for="" class="form-label">Titulo</label>
@@ -74,7 +109,7 @@ $ngeneros = count($generos);
                     </div>
                     <div class="mb-3">
                         <label for="imagen" class="form-label">Portada</label>
-                        <input type="file" accept="img" class="form-control" name="imagen" id="imagen" required>
+                        <input type="file" accept="img" class="form-control" name="imagen" id="imagen">
                     </div>
                     <div class="mb-3">
                         <label for="video" class="form-label">Video</label>

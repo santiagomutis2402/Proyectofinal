@@ -3,6 +3,12 @@ require_once("../class/pelicula.php");
 
 $ID = $_GET['id'];
 $obj_pelicula = new pelicula();
+
+$auth = $obj_pelicula->validar();
+if (!$auth) {
+    header('Location: /');
+}
+
 $detalles = $obj_pelicula->listar_peliculas_ID($ID);
 ?>
 

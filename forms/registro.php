@@ -2,6 +2,11 @@
 require_once("../class/pelicula.php");
 $obj_actividad = new pelicula();
 
+$auth = $obj_actividad->validar();
+if (!$auth) {
+    header('Location: /');
+}
+
 $correo = "";
 $username = "";
 $pasword = "";
@@ -59,15 +64,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
-                <p class="text-white fw-light">Ya tienes cuenta! <a href="/forms/login.php"
-                        class="text-warning">Logeate</a></p>
+                <p class="text-white fw-light">Ya tienes cuenta! <a href="/index.php" class="text-warning">Logeate</a>
+                </p>
 
 
                 <div class="d-grid gap-2 mb-3">
                     <button class="btn btn-outline-primary mb-3" type="submit">Registrarte</button>
 
                 </div>
-                <a href="/index.php" class="text-white fw-lighter ">Volver</a>
+                <a href="/listar.php" class="text-white fw-lighter ">Volver</a>
             </form>
         </div>
     </div>

@@ -19,23 +19,14 @@
             <div class="col-md-6">
                 <ul class="nav col-12 col-md-auto mb-2 justify-content-start mb-md-0">
                     <li>
-                        <a href="../index.php" class="navbar-brand fw-bold fs-4">FreeMovie</a>
+                        <a href="../listar.php" class="navbar-brand fw-bold fs-4">FreeMovie</a>
                     </li>
                 </ul>
             </div>
 
-            <!-- <ul class="nav col-12 col-md-auto mb-2 justify-content-evenly mb-md-0">
-          <li><a href="#" class="nav-link px-2 link-dark">Home</a></li>
-          <li><a href="#" class="nav-link px-2 link-dark">Features</a></li>
-          <li><a href="#" class="nav-link px-2 link-dark">Pricing</a></li>
-          <li><a href="#" class="nav-link px-2 link-dark">FAQs</a></li>
-          <li><a href="#" class="nav-link px-2 link-dark">About</a></li>
-        </ul> -->
-
             <div class="col-md-6">
                 <ul class="nav col-12 col-md-auto mb-2 justify-content-end mb-md-0">
-                    <li><a href="#" class="nav-link px-2 link-dark">Buscar</a></li>
-                    <li><a href="/forms/login.php" class="nav-link px-2 link-dark">Perfil</a></li>
+                    <li><a href="/forms/buscar.php" class="nav-link px-2 link-dark fw-bold">Buscar</a></li>
                 </ul>
             </div>
         </header>
