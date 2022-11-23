@@ -57,16 +57,6 @@ class pelicula extends modeloCredencialesBD
         return $rutaImagen;
     }
 
-    public function eliminar($carpetaImagenes, $titulo)
-    {
-        // $carpetaEliminar = explode('/',  $propiedad['imagen']);
-
-        // // Borrar la imagen anterior...
-        // unlink($carpetaImagenes . $propiedad['imagen']);
-
-        // // Borra la carpeta
-        // rmdir($carpetaImagenes . $carpetaEliminar[0]);
-    }
 
     public function InsertarPelicula($titulo, $descripcion, $portada, $video, $id_genero)
     {
@@ -228,14 +218,33 @@ class pelicula extends modeloCredencialesBD
         }
     }
 
-    public function validar(): bool
+    public function iniciar_Server()
     {
         session_start();
+    }
 
+
+    public function validar(): bool
+    {
+        $correo = $_SESSION['correo'];
+        $username = $_SESSION['usuario'];
         if ($_SESSION['login']) {
             return true;
         }
 
         return false;
+    }
+
+    public function eliminar($id, $video, $portada)
+    {
+        $rutavideo = "../" . $video;
+        unlink($rutavideo);
+        $rutaImagen = "../" . $portada;
+        unlink($rutaImagen);
+
+        $instruccion = "call streamweb.eliminar('${id}')";
+        $consulta = $this->_db->query($instruccion);
+
+        header('Location: /listar.php');
     }
 }

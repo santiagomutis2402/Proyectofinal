@@ -4,7 +4,7 @@ require_once("class/pelicula.php");
 
 
 
-$obj_actividad = new pelicula();
+
 
 $auth = $obj_actividad->validar();
 if (!$auth) {

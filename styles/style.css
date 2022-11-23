@@ -26,8 +26,8 @@
 }
 
 .tmc2 {
-  height: 100%;
-  width: auto;
+  width: 100vw;
+  height: 100vh;
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -82,4 +82,38 @@
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+/* dialog */
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+#mostrar {
+  background-color: #ffffff;
+  color: #161616;
+  border: none;
+  font-size: 1.5rem;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+#dialogo {
+  border: none;
+  border-radius: 10px;
+  height: 60%;
+  width: 40%;
+}
+
+#cerrar {
+  background: #67c3e6;
+  border: none;
+  border-radius: 5px;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+}
+
+.icono {
+  width: 200px;
 }

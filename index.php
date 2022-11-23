@@ -72,7 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <button class="btn btn-outline-primary mb-3" type="submit">Logeate</button>
                     <button class="btn btn-outline-light" type="button">Google</button>
                 </div>
-                <a href="/listar.php" class="text-white fw-lighter ">Volver</a>
             </form>
         </div>
     </div>

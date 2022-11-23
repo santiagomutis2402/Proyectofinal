@@ -1,6 +1,5 @@
 <?php
-include '../templates/header.php';
-require_once("../class/pelicula.php");
+include '../templates/header2.php';
 
 $id = $_GET['id'] ?? 0;
 
@@ -52,17 +51,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
         $carpetaimagenes = $obj_pelicula->crearcarpeta($titulo);
+        $tam = strlen($carpetaimagenes);
+        $carpetaRuta2 =  substr("${carpetaimagenes}", 3, $tam);
+
         $rutaImagen = $obj_pelicula->moverarchivo($portada, $carpetaimagenes, $titulo);
         $rutaVideo = $obj_pelicula->moverarchivo($video, $carpetaimagenes, $titulo);
 
-        var_dump($rutaImagen);
-        echo "<br>";
-        var_dump($rutaVideo);
-        echo "<br>";
+        //verificar esto aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
-        if ($rutaImagen == "img/peliculas/haykiu/") {
+        if ($rutaImagen == "${carpetaRuta2}") {
+            $rutaImagen = $portadadb;
         }
-        exit;
+        if ($rutaVideo == "${carpetaRuta2}") {
+            $rutaVideo = $videodb;
+        }
+        if ($rutaVideo == "${carpetaRuta2}" && $rutaImagen == "${carpetaRuta2}") {
+            $rutaVideo = $videodb;
+            $rutaImagen = $portadadb;
+        }
+
         $response = $obj_insertar->EditarPelicula($titulo, $descripcion, $rutaImagen, $rutaVideo, $genero, $id);
     }
 
