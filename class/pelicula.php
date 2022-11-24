@@ -218,6 +218,7 @@ class pelicula extends modeloCredencialesBD
         }
     }
 
+
     public function iniciar_Server()
     {
         session_start();
