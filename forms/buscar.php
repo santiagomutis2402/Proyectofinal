@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if ($npeliculas > 0) : ?>
         <?php foreach ($peliculas as $r) : ?>
         <div class="col-12 col-md-3 mb-3 ">
-            <a href="/forms/detalles.php?id=<?php echo $r['id'] ?>">
+            <a href="../forms/detalles.php?id=<?php echo $r['id'] ?>">
                 <div class="card tm " style="background-image:url('../<?php echo $r['portada']; ?>') ;">
                     <div class="overlay">
                         <div class="text">

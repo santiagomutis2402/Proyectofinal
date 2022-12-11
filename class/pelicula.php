@@ -214,7 +214,7 @@ class pelicula extends modeloCredencialesBD
         $consulta = $this->_db->query($instruccion);
 
         if ($consulta == true) {
-            header('Location: /listar.php');
+            header('Location: ../index.php');
         }
     }
 
@@ -246,6 +246,6 @@ class pelicula extends modeloCredencialesBD
         $instruccion = "call streamweb.eliminar('${id}')";
         $consulta = $this->_db->query($instruccion);
 
-        header('Location: /listar.php');
+        header('Location: ../listar.php');
     }
 }

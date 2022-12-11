@@ -32,6 +32,7 @@ $detalles = $obj_pelicula->listar_peliculas_ID($ID);
     style="background-image:linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 2)), url('../<?php echo $detalles['portada'] ?>') ;">
 
     <div class="container ">
+        >
         <div class="row">
             <div class="col-12 ">
                 <h1 class="text-start text-white mb-3 mt-5"><?php echo $detalles['titulo'] ?></h1>
@@ -51,7 +52,6 @@ $detalles = $obj_pelicula->listar_peliculas_ID($ID);
                         class="btn btn-outline-warning  mb-2">Editar</a>
                 </div>
             </div>
-
         </div>
     </div>
 </body>

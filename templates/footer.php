@@ -4,7 +4,7 @@
 </script>
 
 
-<script src="/funciones.js"></script>
+<script src="../funciones.js"></script>
 </body>
 
 </html>
